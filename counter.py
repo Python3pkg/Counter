@@ -21,7 +21,7 @@ from operator import itemgetter
 from heapq import nlargest
 from itertools import repeat
 try:
-	from itertools import ifilter
+	
 except ImportError:
 	pass
 
@@ -75,7 +75,7 @@ class Counter(dict):
 
 		'''
                 try:
-                        iteritems = self.iteritems()
+                        iteritems = iter(self.items())
                 except AttributeError:
                         iteritems = iter(self)
 		if n is None:
@@ -94,7 +94,7 @@ class Counter(dict):
 
 		'''
                 try:
-                        iteritems = self.iteritems()
+                        iteritems = iter(self.items())
                 except AttributeError:
                         iteritems = iter(self)
 		for elem, count in iteritems:
@@ -126,7 +126,7 @@ class Counter(dict):
 				if self:
 					self_get = self.get
 					try:
-						iteritems = self.iteritems()
+						iteritems = iter(self.items())
 					except AttributeError:
 						iteritems = iter(self)
 					for elem, count in iteritems:
@@ -228,9 +228,9 @@ class Counter(dict):
 		if len(self) < len(other):
 			self, other = other, self
 		try:
-			elems = ifilter(self.__contains__, other)
-		except NameError:
 			elems = filter(self.__contains__, other)
+		except NameError:
+			elems = list(filter(self.__contains__, other))
 		for elem in elems:
 			newcount = _min(self[elem], other[elem])
 			if newcount > 0:
@@ -240,4 +240,4 @@ class Counter(dict):
 
 if __name__ == '__main__':
 	import doctest
-	print(doctest.testmod())
+	print((doctest.testmod()))
